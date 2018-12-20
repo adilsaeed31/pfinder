@@ -5,7 +5,7 @@ import { CHEAPEST, FASTEST } from './constants'
 type State = {
   isFromLoading: boolean,
   isToLoading: boolean,
-  hasType: string,
+  hasType: ?string,
 }
 
 export default class TripSorter extends React.PureComponent<State> {
