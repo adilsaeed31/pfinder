@@ -4,3 +4,10 @@
 .is-half-width {
     width: 50%;
 }
+
+.is-bottom-2 {
+    margin-bottom: 20px;
+}
+.is-i-bottom-2 {
+    margin-bottom: 20px !important;
+}

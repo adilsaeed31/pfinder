@@ -1,31 +1,72 @@
 // @flow
 import * as React from 'react'
-import { CHEAPEST, FASTEST } from './constants'
 
+// constants
+import { CHEAPEST, FASTEST } from './constants/constants'
+
+// components
+import InfoRow from './components/InfoRow'
+
+// type assignment
 type State = {
-  isFromLoading: boolean,
-  isToLoading: boolean,
-  hasType: ?string,
+  hasType: ?string|null,
+  cityList: Array<string>,
+  currency: string|null,
+  deals: Array<{
+    arrival: string,
+    cost: number,
+    departure: string,
+    discount: number,
+    duration: {
+      h: string,
+      m: string,
+    },
+    reference: string,
+    transport: string,
+  }>
 }
 
 export default class TripSorter extends React.PureComponent<State> {
   state = {
-    isFromLoading: false,
-    isToLoading: false,
     hasType: null,
+    currency: null,
+    cityList: [],
+    deals: [],
   }
 
   componentDidMount() {
+    let list = new Set()
+    let cities = []
+
+    fetch(`/response.json`)
+    .then(res => res.json())
+    .then(res => {
+      // Adding to set object to remove dups
+      res.deals.map(f => list.add(f.arrival)) 
+      // pushing to new array for array type
+      list.forEach(v => cities.push(v))
+      // set to state
+      this.setState({cityList: cities})
+    })
+   
   }
 
   handleType = (hasType) => {
     this.setState({hasType})
   }
 
+  handleSearch = () => {
+    
+  }
+
   render() {
-    let {isFromLoading, isToLoading, hasType} = this.state
+    let {hasType, cityList} = this.state
+    let options = []
+
+
+
     return <section className="section">
-      <div className="container has-text-centered">
+      <div className="container has-text-centered is-bottom-2">
         <div className="columns">
           <div className="column is-full">
             <h1 className="title">TripSorter</h1>
@@ -33,20 +74,27 @@ export default class TripSorter extends React.PureComponent<State> {
         </div>
         <div className="columns">
           <div className="column is-4 is-offset-4">
-            <div className="field">
-              <div className={`control ${isFromLoading === true && 'is-loading'}`}>
-                <input className="input" type="text" placeholder="From"/>
-              </div>
-            </div>
+                 <div className="select is-fullwidth">
+                  <select>
+                    <option value="">From</option>
+                     {
+                       cityList.map(o => <option value={o}>{o}</option>)
+                     }
+                  </select>
+                </div>              
           </div>
         </div>
         <div className="columns">
           <div className="column is-4 is-offset-4">
-            <div className="field">
-              <div className={`control ${isToLoading === true && 'is-loading'}`}>
-                <input className="input" type="text" placeholder="To"/>
-              </div>
-            </div>
+                   <div className="select is-fullwidth">
+                    <select>
+                      <option value="">To</option>
+                        {
+                          cityList.map(o => <option value={o}>{o}</option>)
+                        }
+                    </select>
+                </div> 
+             
           </div>
         </div>
         <div className="columns">
@@ -70,6 +118,21 @@ export default class TripSorter extends React.PureComponent<State> {
                 <i className="fas fa-search"/>
               </span>
               <span>Search</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="container is-bottom-2">
+        <InfoRow/>
+      </div>
+      <div className="container">
+        <div className="columns">
+          <div className="column is-offset-4-desktop is-one-third-desktop is-full-touch is-paddingless">
+            <button className="button is-fullwidth">
+              <span className="icon is-small">
+                <i className="fas fa-undo"/>
+              </span>
+              <span>Reset</span>
             </button>
           </div>
         </div>
