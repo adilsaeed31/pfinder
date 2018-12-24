@@ -2,28 +2,21 @@
 import * as React from 'react'
 
 // constants
-import { CHEAPEST, FASTEST } from './constants/constants'
+import { CHEAPEST, FASTEST } from './constants'
 
 // components
 import InfoRow from './components/InfoRow'
 
 // type assignment
+import { DealsType } from './types'
+
 type State = {
   hasType: ?string|null,
   cityList: Array<string>,
   currency: string|null,
-  deals: Array<{
-    arrival: string,
-    cost: number,
-    departure: string,
-    discount: number,
-    duration: {
-      h: string,
-      m: string,
-    },
-    reference: string,
-    transport: string,
-  }>
+  deals: Array<DealsType>,
+  from: string|null,
+  to: string|null,
 }
 
 export default class TripSorter extends React.PureComponent<State> {
@@ -32,6 +25,8 @@ export default class TripSorter extends React.PureComponent<State> {
     currency: null,
     cityList: [],
     deals: [],
+    from: null,
+    to: null,
   }
 
   componentDidMount() {
@@ -46,7 +41,7 @@ export default class TripSorter extends React.PureComponent<State> {
       // pushing to new array for array type
       list.forEach(v => cities.push(v))
       // set to state
-      this.setState({cityList: cities})
+      this.setState({cityList: cities, currency: res.currency})
     })
    
   }
@@ -59,11 +54,14 @@ export default class TripSorter extends React.PureComponent<State> {
     
   }
 
+  onChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
-    let {hasType, cityList} = this.state
-    let options = []
-
-
+    let { hasType, cityList, deals, currency } = this.state
 
     return <section className="section">
       <div className="container has-text-centered is-bottom-2">
@@ -75,11 +73,9 @@ export default class TripSorter extends React.PureComponent<State> {
         <div className="columns">
           <div className="column is-4 is-offset-4">
                  <div className="select is-fullwidth">
-                  <select>
+                  <select name="from" onChange={this.onChange}>
                     <option value="">From</option>
-                     {
-                       cityList.map(o => <option value={o}>{o}</option>)
-                     }
+                    {cityList.map((o, i) => <option key={i} value={o}>{o}</option>)}
                   </select>
                 </div>              
           </div>
@@ -87,11 +83,9 @@ export default class TripSorter extends React.PureComponent<State> {
         <div className="columns">
           <div className="column is-4 is-offset-4">
                    <div className="select is-fullwidth">
-                    <select>
+                    <select name="to" onChange={this.onChange}>
                       <option value="">To</option>
-                        {
-                          cityList.map(o => <option value={o}>{o}</option>)
-                        }
+                    {cityList.map((o, i) => <option key={i} value={o}>{o}</option>)}
                     </select>
                 </div> 
              
@@ -123,7 +117,7 @@ export default class TripSorter extends React.PureComponent<State> {
         </div>
       </div>
       <div className="container is-bottom-2">
-        <InfoRow/>
+        <InfoRow data={deals} {...currency}/>
       </div>
       <div className="container">
         <div className="columns">

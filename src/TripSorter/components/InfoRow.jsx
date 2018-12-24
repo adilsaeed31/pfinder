@@ -1,11 +1,10 @@
 // @flow
 import * as React from 'react'
 
+// type assignment
+import { DealsType } from './types'
 type Props = {
-    from: string,
-    to: string,
-    price: string,
-    info: string,
+    data: Array<DealsType>,
 }
 
 export default function InfoRow(props: Props) {
