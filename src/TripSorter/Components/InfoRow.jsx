@@ -2,31 +2,32 @@
 import * as React from 'react'
 
 // type assignment
-import { DealsType } from './types'
+import type DealsType from '../Types'
+
 type Props = {
-    data: Array<DealsType>,
+  item: DealsType,
 }
 
-export default function InfoRow(props: Props) {
-    return   <div className="columns is-mobile has-background-light is-i-bottom-2">
+export default function InfoRow({ item, currency }: Props) {
+  return <div className="columns is-mobile has-background-light is-i-bottom-2">
     <div className="column">
       <div className="columns is-mobile is-marginless">
         <div className="column">
-          <p>London</p>
+          <p>{item.departure}</p>
         </div>
         <div className="column">
           >
         </div>
         <div className="column">
-          <p>Paris</p>
+          <p>{item.arrival}</p>
         </div>
         <div className="column">
-          <p>100 E</p>
+          <strong>{`${(item.cost - item.discount)} ${currency}`}</strong>
         </div>
       </div>
       <div className="columns is-mobile is-marginless">
         <div className="column">
-          <p>Train AB123 for 02h15</p>
+          <p>{item.transport.toUpperCase()} {item.reference} for {item.duration.h}h{item.duration.m}</p>
         </div>
       </div>
     </div>
