@@ -141,7 +141,6 @@ export default class TripSorter extends React.PureComponent<State> {
                 {cityList.map((o, i) => <option key={i} value={o}>{o}</option>)}
               </select>
             </div>
-
           </div>
         </div>
         <div className="columns">
@@ -172,9 +171,8 @@ export default class TripSorter extends React.PureComponent<State> {
         </div>
       </div>
       <div className="container is-bottom-2">
-        {deals.length === 0 ?
-          <p>No Flight Information available at this moment please try after some time. Thank
-            you!</p> : this.renderDeals()
+        {
+          this.renderDeals()
         }
       </div>
       {
