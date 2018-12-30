@@ -78,7 +78,6 @@ export default class TripSorter extends React.PureComponent<State> {
           currency: res.currency
         })
       })
-
   }
 
   handleReset = () => {
