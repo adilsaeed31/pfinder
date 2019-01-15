@@ -27,7 +27,7 @@ export default function InfoRow({ item, currency }: Props) {
       </div>
       <div className="columns is-mobile is-marginless">
         <div className="column">
-          <p>{item.transport.toUpperCase()} {item.reference} for {item.duration.h}h{item.duration.m}</p>
+          <p><i className={`fas fa-${item.transport}`}></i> {item.reference} for <strong>{item.duration.h}h{item.duration.m}</strong></p>
         </div>
       </div>
     </div>
